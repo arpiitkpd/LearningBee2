@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LearningBee — Portal Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#181818;
+    --ink-soft:#4b4a47;
+    --muted:#8b8983;
+    --line:#e7e4dd;
+    --line-soft:#f0eee8;
+    --bg:#faf9f6;
+    --panel:#ffffff;
+    --sidebar:#161513;
+    --sidebar-soft:#a9a69e;
+    --amber:#c8781f;
+    --amber-strong:#a8620f;
+    --amber-tint:#fbeee0;
+    --amber-tint-2:#f6e2c9;
+    --green:#2f7d55;
+    --green-tint:#e7f3ec;
+    --blue:#2f6fb0;
+    --blue-tint:#e8f0f9;
+    --violet:#6a5a9c;
+    --violet-tint:#eeeaf7;
+    --red:#b6473f;
+    --radius:10px;
+    --radius-lg:12px;
+    --shadow: 0 1px 2px rgba(24,24,24,0.04), 0 8px 20px -12px rgba(24,24,24,0.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Inter',sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{font-family:'Manrope',sans-serif;}
+
+  /* ---------- Deck chrome ---------- */
+  .deck-nav{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; gap:6px;
+    padding:11px 20px;
+    background:var(--sidebar);
+    border-bottom:1px solid rgba(255,255,255,0.06);
+    overflow-x:auto;
+  }
+  .deck-nav .brand{
+    display:flex; align-items:center; gap:8px;
+    color:#f2f1ec; font-weight:700; font-size:13.5px;
+    margin-right:16px; white-space:nowrap; font-family:'Manrope',sans-serif;
+    letter-spacing:.01em;
+  }
+  .deck-nav .brand .dot{width:6px;height:6px;border-radius:50%;background:var(--amber);}
+  .deck-btn{
+    border:1px solid rgba(255,255,255,0.09);
+    background:transparent;
+    color:#c7c4bb; padding:7px 13px; border-radius:7px;
+    font-size:12.5px; font-weight:600; cursor:pointer; white-space:nowrap;
+    transition:all .15s ease; font-family:'Inter',sans-serif;
+  }
+  .deck-btn:hover{background:rgba(255,255,255,0.06); color:#fff;}
+  .deck-btn.active{background:var(--amber); color:#fff; border-color:var(--amber);}
+
+  .screen{display:none;}
+  .screen.active{display:block; animation:fade .18s ease;}
+  @keyframes fade{from{opacity:0;} to{opacity:1;}}
+
+  /* ================= LOGIN ================= */
+  .login-wrap{
+    min-height:calc(100vh - 51px);
+    display:flex; align-items:center; justify-content:center;
+    padding:40px 20px;
+    background:
+      linear-gradient(180deg, #1b1a17 0%, #232019 100%);
+  }
+  .login-card{
+    width:100%; max-width:384px;
+    background:var(--panel);
+    border-radius:var(--radius-lg);
+    box-shadow:0 24px 60px -20px rgba(0,0,0,0.5);
+    padding:36px 34px;
+    border:1px solid var(--line);
+  }
+  .logo-row{display:flex; align-items:center; gap:10px; margin-bottom:26px;}
+  .logo-mark{width:30px; height:30px; border-radius:7px; background:var(--sidebar); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .logo-mark svg{width:17px; height:17px;}
+  .logo-word{font-size:16.5px; font-weight:800; letter-spacing:-.01em;}
+  .login-title{font-size:19px; font-weight:700; margin:0 0 4px;}
+  .login-sub{color:var(--muted); font-size:13px; margin:0 0 24px;}
+  .field{text-align:left; margin-bottom:14px;}
+  .field label{font-size:12px; font-weight:600; color:var(--ink-soft);}
+  .field input{
+    width:100%; margin-top:6px; padding:10px 12px; border-radius:8px;
+    border:1px solid var(--line); background:var(--bg); font-size:13.5px; font-family:'Inter'; color:var(--ink);
+  }
+  .field input:focus{outline:none; border-color:var(--amber); background:#fff;}
+  .btn-primary{
+    width:100%; padding:11px; border:none; border-radius:8px; cursor:pointer;
+    background:var(--sidebar);
+    color:#fff; font-weight:700; font-size:13.5px; font-family:'Inter';
+    margin-top:8px;
+  }
+  .btn-primary:hover{background:#000;}
+  .login-foot{margin-top:16px; font-size:12px; color:var(--muted); text-align:center;}
+  .login-foot a{color:var(--amber); text-decoration:none; font-weight:600;}
+
+  /* ================= APP SHELL ================= */
+  .app{display:flex; min-height:calc(100vh - 51px);}
+  .sidebar{
+    width:216px; flex-shrink:0; background:var(--sidebar);
+    padding:18px 12px; display:flex; flex-direction:column; gap:2px;
+  }
+  .sb-brand{display:flex; align-items:center; gap:9px; padding:4px 8px 18px; border-bottom:1px solid rgba(255,255,255,0.08); margin-bottom:10px;}
+  .sb-brand .logo-mark{background:rgba(255,255,255,0.08);}
+  .sb-brand span{color:#f2f1ec; font-family:'Manrope'; font-weight:800; font-size:14px; letter-spacing:-.01em;}
+  .sb-section-lbl{font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:#6f6c63; font-weight:700; padding:14px 10px 6px;}
+  .nav-item{
+    display:flex; align-items:center; gap:10px;
+    padding:8px 10px; border-radius:7px; color:var(--sidebar-soft);
+    font-size:13px; font-weight:500; cursor:pointer; transition:.15s;
+  }
+  .nav-item svg{width:15px; height:15px; flex-shrink:0; opacity:.85;}
+  .nav-item:hover{background:rgba(255,255,255,0.05); color:#fff;}
+  .nav-item.active{background:rgba(255,255,255,0.09); color:#fff; font-weight:600;}
+  .nav-item.active svg{opacity:1;}
+  .sb-foot{margin-top:auto; padding:12px 10px 0; font-size:11px; color:#57544c; border-top:1px solid rgba(255,255,255,0.08);}
+
+  .main{flex:1; padding:24px 30px; min-width:0;}
+  .topbar{display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:12px; padding-bottom:16px; border-bottom:1px solid var(--line);}
+  .greet h1{font-size:18.5px; margin:0 0 3px; font-weight:800; letter-spacing:-.01em;}
+  .greet p{margin:0; color:var(--muted); font-size:13px;}
+  .top-right{display:flex; align-items:center; gap:12px;}
+  .pill{
+    display:flex; align-items:center; gap:6px; background:var(--panel); border:1px solid var(--line);
+    padding:6px 12px; border-radius:7px; font-weight:700; font-size:12.5px; color:var(--ink-soft);
+  }
+  .pill .n{color:var(--amber-strong);}
+  .avatar{width:32px; height:32px; border-radius:50%; background:var(--violet); color:#fff; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; font-family:'Manrope';}
+
+  .card{background:var(--panel); border-radius:var(--radius-lg); border:1px solid var(--line); box-shadow:var(--shadow); padding:18px 20px;}
+
+  /* course pills */
+  .course-tabs{display:flex; gap:8px; margin:16px 0 18px;}
+  .ctab{padding:7px 16px; border-radius:7px; font-weight:600; font-size:12.5px; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--muted);}
+  .ctab.active{background:var(--sidebar); color:#fff; border-color:var(--sidebar);}
+  .ctab.disabled{opacity:.55; cursor:default;}
+
+  /* stat row */
+  .stat-row{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px;}
+  .statcard{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius-lg); padding:15px 16px;
+    box-shadow:var(--shadow);
+  }
+  .statcard .lbl{font-size:11.5px; color:var(--muted); font-weight:600;}
+  .statcard .val{font-size:22px; font-weight:800; font-family:'Manrope'; margin-top:5px; letter-spacing:-.01em;}
+  .statcard .delta{font-size:11px; font-weight:600; margin-top:4px;}
+  .delta.up{color:var(--green);}
+  .delta.flat{color:var(--muted);}
+
+  .section-title{font-size:13.5px; font-weight:700; margin:0 0 14px; display:flex; align-items:center; justify-content:space-between;}
+  .section-title .link{font-size:12px; font-weight:600; color:var(--amber-strong); cursor:pointer;}
+
+  /* band tabs */
+  .band-tabs{display:flex; gap:20px; border-bottom:1px solid var(--line); margin-bottom:16px;}
+  .btab{padding:6px 1px 10px; font-weight:600; font-size:12.5px; color:var(--muted); cursor:pointer; border-bottom:2px solid transparent;}
+  .btab.active{color:var(--ink); border-color:var(--amber);}
+  .chart-area{height:160px; position:relative; padding:0 4px;}
+  .chart-area svg{width:100%; height:100%;}
+
+  /* test list */
+  .filters{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;}
+  .filters input{padding:8px 12px; border-radius:7px; border:1px solid var(--line); font-size:12.5px; font-family:'Inter'; background:var(--bg); color:var(--ink);}
+  .filters button{padding:8px 16px; border-radius:7px; border:none; background:var(--sidebar); color:#fff; font-weight:600; font-size:12.5px; cursor:pointer;}
+  .subtabs{display:flex; gap:22px; border-bottom:1px solid var(--line); margin-bottom:14px;}
+  .subtabs .st{padding:5px 1px 10px; font-size:12.5px; color:var(--muted); font-weight:600; cursor:pointer; border-bottom:2px solid transparent;}
+  .subtabs .st b{color:var(--ink); font-size:14px; font-weight:800;}
+  .subtabs .st.active{color:var(--ink); border-color:var(--amber);}
+  table{width:100%; border-collapse:collapse; font-size:13px;}
+  thead th{text-align:left; color:var(--muted); font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:.03em; padding:9px 12px; border-bottom:1px solid var(--line);}
+  tbody td{padding:12px 12px; border-bottom:1px solid var(--line-soft); color:var(--ink-soft);}
+  tbody td:first-child{color:var(--ink); font-weight:600;}
+  tbody tr:hover{background:var(--bg);}
+  .type-badge{padding:3px 9px; border-radius:5px; font-size:10.5px; font-weight:700; letter-spacing:.01em;}
+  .tb-listen{background:var(--blue-tint); color:var(--blue);}
+  .tb-obj{background:var(--green-tint); color:var(--green);}
+  .tb-subj{background:var(--violet-tint); color:var(--violet);}
+  .btn-take{padding:6px 14px; border-radius:6px; border:none; background:var(--sidebar); color:#fff; font-weight:600; font-size:12px; cursor:pointer;}
+  .btn-ghost{padding:6px 14px; border-radius:6px; border:1px solid var(--line); background:transparent; color:var(--ink-soft); font-weight:600; font-size:12px; cursor:pointer;}
+  .score-chip{font-weight:700; font-family:'Manrope'; color:var(--amber-strong);}
+
+  /* hives / leaderboard */
+  .grid-2{display:grid; grid-template-columns:1fr 1.35fr; gap:16px; align-items:start;}
+  .hive-list{display:flex; flex-direction:column; gap:8px;}
+  .hive-item{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:11px 12px; border-radius:8px; border:1px solid var(--line); background:var(--panel); cursor:pointer;
+  }
+  .hive-item.active{border-color:var(--amber); background:var(--amber-tint);}
+  .hive-left{display:flex; align-items:center; gap:10px;}
+  .hive-ic{width:30px; height:30px; border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; font-family:'Manrope';
+    background:var(--sidebar); color:#fff;}
+  .hive-name{font-weight:700; font-size:13px;}
+  .hive-meta{font-size:11px; color:var(--muted); margin-top:1px;}
+  .badge-count{background:var(--bg); border:1px solid var(--line); color:var(--ink-soft); font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:5px;}
+  .lb-row{display:flex; align-items:center; gap:11px; padding:10px 6px; border-bottom:1px solid var(--line-soft);}
+  .lb-row:last-child{border-bottom:none;}
+  .lb-rank{width:22px; height:22px; border-radius:5px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:11px; font-family:'Manrope'; background:var(--bg); color:var(--muted); flex-shrink:0; border:1px solid var(--line);}
+  .lb-rank.gold{background:var(--sidebar); color:#fff; border-color:var(--sidebar);}
+  .lb-av{width:28px; height:28px; border-radius:50%; background:var(--violet); flex-shrink:0; color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; font-family:'Manrope';}
+  .lb-name{font-weight:700; font-size:12.5px; flex:1;}
+  .lb-hive-tag{font-size:10.5px; color:var(--muted); font-weight:500;}
+  .lb-points{font-weight:800; font-family:'Manrope'; color:var(--amber-strong); font-size:13px;}
+  .add-hive-btn{margin-top:12px; width:100%; padding:9px; border-radius:8px; border:1px dashed var(--line); background:transparent; color:var(--ink-soft); font-weight:600; font-size:12.5px; cursor:pointer;}
+  .add-hive-btn:hover{border-color:var(--amber); color:var(--amber-strong);}
+
+  /* test taking */
+  .exam-shell{border-radius:var(--radius-lg); overflow:hidden; border:1px solid var(--line); box-shadow:var(--shadow);}
+  .exam-top{display:flex; justify-content:space-between; align-items:center; background:var(--sidebar); color:#fff; padding:13px 20px;}
+  .exam-top .et{font-weight:700; font-size:13px; font-family:'Manrope';}
+  .timer{background:rgba(255,255,255,0.1); padding:6px 14px; border-radius:6px; font-weight:700; font-size:12.5px; color:#f2c893;}
+  .exam-body{display:flex; background:var(--panel);}
+  .exam-q{flex:1; padding:24px 28px;}
+  .qnum{color:var(--amber-strong); font-weight:700; font-family:'Manrope'; font-size:11.5px; margin-bottom:10px; letter-spacing:.02em;}
+  .qtext{font-size:14.5px; font-weight:600; margin-bottom:16px; line-height:1.55;}
+  .opt{
+    display:flex; align-items:center; gap:11px; padding:11px 14px; border-radius:8px;
+    border:1px solid var(--line); margin-bottom:9px; cursor:pointer; font-size:13px; color:var(--ink-soft);
+  }
+  .opt:hover{border-color:var(--amber);}
+  .opt.sel{border-color:var(--amber); background:var(--amber-tint); color:var(--ink);}
+  .opt .radio{width:15px; height:15px; border-radius:50%; border:1.5px solid var(--line); flex-shrink:0;}
+  .opt.sel .radio{border-color:var(--amber); background:radial-gradient(circle,var(--amber) 40%, transparent 45%);}
+  .exam-side{width:216px; border-left:1px solid var(--line); padding:20px; background:var(--bg);}
+  .exam-side h4{font-size:11px; text-transform:uppercase; color:var(--muted); letter-spacing:.04em; margin:0 0 12px; font-weight:700;}
+  .qgrid{display:grid; grid-template-columns:repeat(5,1fr); gap:6px;}
+  .qbox{aspect-ratio:1; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; border:1px solid var(--line); color:var(--muted); cursor:pointer; background:var(--panel);}
+  .qbox.done{background:var(--sidebar); color:#fff; border-color:var(--sidebar);}
+  .qbox.current{border-color:var(--amber); border-width:2px; color:var(--amber-strong);}
+  .exam-foot{display:flex; justify-content:space-between; padding:14px 20px; border-top:1px solid var(--line);}
+
+  .footnote{text-align:center; padding:22px; color:var(--muted); font-size:11.5px;}
+
+  @media (max-width:900px){
+    .stat-row{grid-template-columns:repeat(2,1fr);}
+    .grid-2{grid-template-columns:1fr;}
+    .exam-body{flex-direction:column;}
+    .exam-side{width:auto; border-left:none; border-top:1px solid var(--line);}
+    .sidebar{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- Deck navigation (demo-only chrome) -->
+<div class="deck-nav" id="deckNav">
+  <div class="brand"><span class="dot"></span>LearningBee — Demo Deck</div>
+  <button class="deck-btn active" data-screen="login">1 · Login</button>
+  <button class="deck-btn" data-screen="dashboard">2 · Dashboard</button>
+  <button class="deck-btn" data-screen="tests">3 · Assigned Tests</button>
+  <button class="deck-btn" data-screen="history">4 · Test History</button>
+  <button class="deck-btn" data-screen="hives">5 · Hives &amp; Leaderboard</button>
+  <button class="deck-btn" data-screen="exam">6 · Taking a Test</button>
+</div>
+
+<!-- helper: brand mark svg used everywhere -->
+<!-- ============ SCREEN 1: LOGIN ============ -->
+<div class="screen active" id="s-login">
+  <div class="login-wrap">
+    <div class="login-card">
+      <div class="logo-row">
+        <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L4 6v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6l-8-4z" fill="#c8781f"/></svg></div>
+        <div class="logo-word">LearningBee</div>
+      </div>
+      <p class="login-title">Sign in to your account</p>
+      <p class="login-sub">Access your assigned tests and progress</p>
+      <div class="field"><label>Email</label><input type="text" placeholder="paridhi.jindal@email.com"></div>
+      <div class="field"><label>Password</label><input type="password" placeholder="••••••••"></div>
+      <button class="btn-primary" onclick="go('dashboard')">Sign In</button>
+      <p class="login-foot">Forgot password? &nbsp;·&nbsp; Contact your test center for access</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============ Sidebar template (reused via JS-free duplication) ============ -->
+
+<!-- ============ SCREEN 2: DASHBOARD ============ -->
+<div class="screen" id="s-dashboard">
+  <div class="app">
+    <div class="sidebar">
+      <div class="sb-brand"><div class="logo-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L4 6v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6l-8-4z" fill="#c8781f"/></svg></div><span>LearningBee</span></div>
+      <div class="nav-item active" onclick="go('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg> Dashboard</div>
+      <div class="nav-item" onclick="go('tests')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4h9a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H9M9 4H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h3M9 4v16M13 9h3M13 13h3"/></svg> Assigned Tests</div>
+      <div class="nav-item" onclick="go('history')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 3h6"/></svg> Test History</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Assigned Courses</div>
+      <div class="nav-item" onclick="go('hives')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="8" r="3"/><path d="M2 21v-1a5 5 0 0 1 5-5h2a5 5 0 0 1 5 5v1M14 15h1a5 5 0 0 1 5 5v1"/></svg> Hives &amp; Leaderboard</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3"/></svg> Online Sessions</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22.5v-18z"/><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/></svg> eBooks</div>
+      <div class="sb-foot">LearningBee Portal · v1.0</div>
+    </div>
+    <div class="main">
+      <div class="topbar">
+        <div class="greet">
+          <h1>Welcome back, Paridhi</h1>
+          <p>Courses assigned: <b>IELTS</b> &nbsp;·&nbsp; Total tests taken: <b>55</b></p>
+        </div>
+        <div class="top-right">
+          <div class="pill">Points: <span class="n">1,240</span></div>
+          <div class="avatar">PJ</div>
+        </div>
+      </div>
+
+      <div class="course-tabs">
+        <div class="ctab active">IELTS</div>
+        <div class="ctab disabled">CELPIP — coming soon</div>
+      </div>
+
+      <div class="stat-row">
+        <div class="statcard"><div class="lbl">Current Band</div><div class="val">7.5</div><div class="delta up">↑ 0.5 this month</div></div>
+        <div class="statcard"><div class="lbl">Tests This Week</div><div class="val">6</div><div class="delta flat">On track</div></div>
+        <div class="statcard"><div class="lbl">Hive Rank</div><div class="val">#3</div><div class="delta flat">Hive Alpha</div></div>
+        <div class="statcard"><div class="lbl">Current Streak</div><div class="val">9 days</div><div class="delta up">Personal best</div></div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Where you stand <span class="link">View full report</span></div>
+        <div class="band-tabs">
+          <div class="btab active">Listening</div><div class="btab">Reading</div><div class="btab">Writing</div><div class="btab">Speaking</div>
+        </div>
+        <div class="chart-area">
+          <svg viewBox="0 0 500 150" preserveAspectRatio="none">
+            <line x1="0" y1="30" x2="500" y2="30" stroke="#eee" stroke-width="1"/>
+            <line x1="0" y1="75" x2="500" y2="75" stroke="#eee" stroke-width="1"/>
+            <line x1="0" y1="120" x2="500" y2="120" stroke="#eee" stroke-width="1"/>
+            <polyline points="10,70 110,40 210,55 310,95 410,90 490,88" fill="none" stroke="#c8781f" stroke-width="2.5"/>
+            <polygon points="10,70 110,40 210,55 310,95 410,90 490,88 490,150 10,150" fill="#c8781f" opacity="0.06"/>
+            <circle cx="10" cy="70" r="3.5" fill="#c8781f"/><circle cx="110" cy="40" r="3.5" fill="#c8781f"/>
+            <circle cx="210" cy="55" r="3.5" fill="#c8781f"/><circle cx="310" cy="95" r="3.5" fill="#c8781f"/>
+            <circle cx="410" cy="90" r="3.5" fill="#c8781f"/><circle cx="490" cy="88" r="3.5" fill="#c8781f"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN 3: ASSIGNED TESTS ============ -->
+<div class="screen" id="s-tests">
+  <div class="app">
+    <div class="sidebar">
+      <div class="sb-brand"><div class="logo-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L4 6v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6l-8-4z" fill="#c8781f"/></svg></div><span>LearningBee</span></div>
+      <div class="nav-item" onclick="go('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg> Dashboard</div>
+      <div class="nav-item active" onclick="go('tests')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4h9a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H9M9 4H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h3M9 4v16M13 9h3M13 13h3"/></svg> Assigned Tests</div>
+      <div class="nav-item" onclick="go('history')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 3h6"/></svg> Test History</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Assigned Courses</div>
+      <div class="nav-item" onclick="go('hives')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="8" r="3"/><path d="M2 21v-1a5 5 0 0 1 5-5h2a5 5 0 0 1 5 5v1M14 15h1a5 5 0 0 1 5 5v1"/></svg> Hives &amp; Leaderboard</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3"/></svg> Online Sessions</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22.5v-18z"/><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/></svg> eBooks</div>
+      <div class="sb-foot">LearningBee Portal · v1.0</div>
+    </div>
+    <div class="main">
+      <div class="topbar">
+        <div class="greet"><h1>Assigned Tests</h1><p>IELTS · pick up where you left off</p></div>
+        <div class="top-right"><div class="pill">Points: <span class="n">1,240</span></div><div class="avatar">PJ</div></div>
+      </div>
+      <div class="card">
+        <div class="subtabs">
+          <div class="st active"><b>189</b> Pending</div>
+          <div class="st"><b>55</b> Attempted</div>
+          <div class="st"><b>0</b> Expired</div>
+          <div class="st"><b>244</b> Total</div>
+        </div>
+        <div class="filters">
+          <input placeholder="Search test name">
+          <input placeholder="Due date from">
+          <input placeholder="Due date to">
+          <button>Search</button>
+        </div>
+        <table>
+          <thead><tr><th>Test Name</th><th>Type</th><th>Due Date</th><th></th></tr></thead>
+          <tbody>
+            <tr><td>IELTS Listening – 22 (BT-L-22E)</td><td><span class="type-badge tb-listen">Listening</span></td><td>Dec 31, 2026</td><td><button class="btn-take" onclick="go('exam')">Take Test</button></td></tr>
+            <tr><td>IELTS Reading – 14 Objective (BT-O-14E)</td><td><span class="type-badge tb-obj">Objective</span></td><td>Dec 31, 2026</td><td><button class="btn-take" onclick="go('exam')">Take Test</button></td></tr>
+            <tr><td>IELTS Writing Task 2 (BT-S-09E)</td><td><span class="type-badge tb-subj">Subjective</span></td><td>Dec 31, 2026</td><td><button class="btn-take" onclick="go('exam')">Take Test</button></td></tr>
+            <tr><td>IELTS Listening – 20 (BT-L-20E)</td><td><span class="type-badge tb-listen">Listening</span></td><td>Dec 31, 2026</td><td><button class="btn-take" onclick="go('exam')">Take Test</button></td></tr>
+            <tr><td>IELTS Grammar Objective – 07 (BT-O-07E)</td><td><span class="type-badge tb-obj">Objective</span></td><td>Dec 31, 2026</td><td><button class="btn-take" onclick="go('exam')">Take Test</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN 4: TEST HISTORY ============ -->
+<div class="screen" id="s-history">
+  <div class="app">
+    <div class="sidebar">
+      <div class="sb-brand"><div class="logo-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L4 6v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6l-8-4z" fill="#c8781f"/></svg></div><span>LearningBee</span></div>
+      <div class="nav-item" onclick="go('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg> Dashboard</div>
+      <div class="nav-item" onclick="go('tests')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4h9a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H9M9 4H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h3M9 4v16M13 9h3M13 13h3"/></svg> Assigned Tests</div>
+      <div class="nav-item active" onclick="go('history')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 3h6"/></svg> Test History</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Assigned Courses</div>
+      <div class="nav-item" onclick="go('hives')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="8" r="3"/><path d="M2 21v-1a5 5 0 0 1 5-5h2a5 5 0 0 1 5 5v1M14 15h1a5 5 0 0 1 5 5v1"/></svg> Hives &amp; Leaderboard</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3"/></svg> Online Sessions</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22.5v-18z"/><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/></svg> eBooks</div>
+      <div class="sb-foot">LearningBee Portal · v1.0</div>
+    </div>
+    <div class="main">
+      <div class="topbar">
+        <div class="greet"><h1>Test History</h1><p>Every attempt, timestamped, so you can see how you're trending</p></div>
+        <div class="top-right"><div class="pill">Points: <span class="n">1,240</span></div><div class="avatar">PJ</div></div>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Test Name</th><th>Type</th><th>Started</th><th>Submitted</th><th>Duration</th><th>Score</th></tr></thead>
+          <tbody>
+            <tr><td>IELTS Listening – 21</td><td><span class="type-badge tb-listen">Listening</span></td><td>Aug 07, 2026 · 09:14 AM</td><td>Aug 07, 2026 · 09:44 AM</td><td>30 min</td><td class="score-chip">Band 8.0</td></tr>
+            <tr><td>IELTS Reading Objective – 13</td><td><span class="type-badge tb-obj">Objective</span></td><td>Aug 06, 2026 · 06:02 PM</td><td>Aug 06, 2026 · 06:47 PM</td><td>45 min</td><td class="score-chip">32/40</td></tr>
+            <tr><td>IELTS Writing Task 1</td><td><span class="type-badge tb-subj">Subjective</span></td><td>Aug 05, 2026 · 07:30 PM</td><td>Aug 05, 2026 · 08:10 PM</td><td>40 min</td><td style="color:var(--muted); font-weight:600;">Pending review</td></tr>
+            <tr><td>IELTS Listening – 19</td><td><span class="type-badge tb-listen">Listening</span></td><td>Aug 04, 2026 · 08:20 AM</td><td>Aug 04, 2026 · 08:51 AM</td><td>31 min</td><td class="score-chip">Band 7.5</td></tr>
+            <tr><td>IELTS Grammar Objective – 06</td><td><span class="type-badge tb-obj">Objective</span></td><td>Aug 03, 2026 · 05:15 PM</td><td>Aug 03, 2026 · 05:38 PM</td><td>23 min</td><td class="score-chip">27/30</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN 5: HIVES & LEADERBOARD ============ -->
+<div class="screen" id="s-hives">
+  <div class="app">
+    <div class="sidebar">
+      <div class="sb-brand"><div class="logo-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2L4 6v6c0 5 3.4 8.7 8 10 4.6-1.3 8-5 8-10V6l-8-4z" fill="#c8781f"/></svg></div><span>LearningBee</span></div>
+      <div class="nav-item" onclick="go('dashboard')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg> Dashboard</div>
+      <div class="nav-item" onclick="go('tests')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 4h9a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H9M9 4H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h3M9 4v16M13 9h3M13 13h3"/></svg> Assigned Tests</div>
+      <div class="nav-item" onclick="go('history')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 3h6"/></svg> Test History</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Assigned Courses</div>
+      <div class="nav-item active" onclick="go('hives')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="8" r="3"/><path d="M2 21v-1a5 5 0 0 1 5-5h2a5 5 0 0 1 5 5v1M14 15h1a5 5 0 0 1 5 5v1"/></svg> Hives &amp; Leaderboard</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="M16 10l6-3v10l-6-3"/></svg> Online Sessions</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22.5v-18z"/><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/></svg> eBooks</div>
+      <div class="sb-foot">LearningBee Portal · v1.0</div>
+    </div>
+    <div class="main">
+      <div class="topbar">
+        <div class="greet"><h1>Hives &amp; Leaderboard</h1><p>Group students into Hives, then rank them by test performance — admin view</p></div>
+        <div class="top-right"><div class="avatar">PJ</div></div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="section-title">Hives (manual groups)</div>
+          <div class="hive-list">
+            <div class="hive-item active"><div class="hive-left"><div class="hive-ic">A</div><div><div class="hive-name">Hive Alpha</div><div class="hive-meta">Batch: IELTS Evening · 18 students</div></div></div><span class="badge-count">Rank 1</span></div>
+            <div class="hive-item"><div class="hive-left"><div class="hive-ic">B</div><div><div class="hive-name">Hive Bravo</div><div class="hive-meta">Batch: IELTS Weekend · 22 students</div></div></div><span class="badge-count">Rank 2</span></div>
+            <div class="hive-item"><div class="hive-left"><div class="hive-ic">C</div><div><div class="hive-name">Hive Comet</div><div class="hive-meta">Batch: IELTS Morning · 15 students</div></div></div><span class="badge-count">Rank 3</span></div>
+          </div>
+          <button class="add-hive-btn">+ Create new Hive</button>
+        </div>
+        <div class="card">
+          <div class="section-title">Leaderboard — Hive Alpha</div>
+          <div class="lb-row"><div class="lb-rank gold">1</div><div class="lb-av">RS</div><div><div class="lb-name">Riya Sharma</div><div class="lb-hive-tag">Hive Alpha</div></div><div class="lb-points">2,140 pts</div></div>
+          <div class="lb-row"><div class="lb-rank gold">2</div><div class="lb-av">KM</div><div><div class="lb-name">Karan Mehta</div><div class="lb-hive-tag">Hive Alpha</div></div><div class="lb-points">1,980 pts</div></div>
+          <div class="lb-row"><div class="lb-rank gold">3</div><div class="lb-av">PJ</div><div><div class="lb-name">Paridhi Jindal</div><div class="lb-hive-tag">Hive Alpha</div></div><div class="lb-points">1,240 pts</div></div>
+          <div class="lb-row"><div class="lb-rank">4</div><div class="lb-av">AR</div><div><div class="lb-name">Aditya Rao</div><div class="lb-hive-tag">Hive Alpha</div></div><div class="lb-points">1,110 pts</div></div>
+          <div class="lb-row"><div class="lb-rank">5</div><div class="lb-av">SK</div><div><div class="lb-name">Simran Kaur</div><div class="lb-hive-tag">Hive Alpha</div></div><div class="lb-points">980 pts</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SCREEN 6: TEST TAKING ============ -->
+<div class="screen" id="s-exam">
+  <div style="max-width:1080px; margin:24px auto; padding:0 20px;">
+    <div class="exam-shell">
+      <div class="exam-top">
+        <div class="et">IELTS Reading Objective – 14</div>
+        <div class="timer">28:45 remaining</div>
+      </div>
+      <div class="exam-body">
+        <div class="exam-q">
+          <div class="qnum">QUESTION 6 OF 25</div>
+          <div class="qtext">According to the passage, what was the primary reason early beekeepers began marking hives by colony rather than by individual bee?</div>
+          <div class="opt sel"><div class="radio"></div> To track colony productivity over each season</div>
+          <div class="opt"><div class="radio"></div> To identify which queen bee was dominant</div>
+          <div class="opt"><div class="radio"></div> To simplify honey extraction logistics</div>
+          <div class="opt"><div class="radio"></div> To comply with regional trade regulations</div>
+        </div>
+        <div class="exam-side">
+          <h4>Question Palette</h4>
+          <div class="qgrid">
+            <div class="qbox done">1</div><div class="qbox done">2</div><div class="qbox done">3</div><div class="qbox done">4</div><div class="qbox done">5</div>
+            <div class="qbox current">6</div><div class="qbox">7</div><div class="qbox">8</div><div class="qbox">9</div><div class="qbox">10</div>
+            <div class="qbox">11</div><div class="qbox">12</div><div class="qbox">13</div><div class="qbox">14</div><div class="qbox">15</div>
+          </div>
+        </div>
+      </div>
+      <div class="exam-foot">
+        <button class="btn-ghost">← Previous</button>
+        <button class="btn-take">Save &amp; Next →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footnote">LearningBee — clickable concept mockup for client review · not final visual design · all data illustrative</div>
+
+<script>
+  function go(name){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById('s-'+name).classList.add('active');
+    document.querySelectorAll('.deck-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelector('.deck-btn[data-screen="'+name+'"]').classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  document.querySelectorAll('.deck-btn').forEach(b=>{
+    b.addEventListener('click',()=>go(b.dataset.screen));
+  });
+</script>
+</body>
+</html>
